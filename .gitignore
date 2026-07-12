@@ -1,0 +1,19 @@
+# Environment / secrets
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Large / regeneratable model artifacts (optional -- remove these lines
+# if you want to commit the trained models directly to the repo)
+# models/*.pkl
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jupyter
+*.ipynb_checkpoints
