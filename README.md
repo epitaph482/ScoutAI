@@ -6,6 +6,23 @@ The project combines data analysis, model optimization, explainable AI, clusteri
 
 ---
 
+![SHAP Summary — Full Model](notebooks/images/shap_summary_full.png)
+
+---
+
+# 📊 Model Performance
+
+Both models were hyperparameter-tuned via `RandomizedSearchCV` (5-fold CV, log-RMSE objective).
+
+| Model | RMSE (old → new) | R² (old → new) | 5-Fold CV Log-RMSE |
+|---|---|---|---|
+| **Full** | €4,022,706 → **€3,848,864** | 0.6992 → **0.7246** | 0.7921 |
+| **Performance Only** | €3,883,840 → **€3,763,374** | 0.7196 → **0.7367** | 0.8491 |
+
+Tuning reduced RMSE by ~€174K (full) and ~€120K (performance-only), with both models clearing R² > 0.72 on held-out data. Full tuning logs and best hyperparameters are in [`notebooks/data/tuning_results_log.txt`](notebooks/data/tuning_results_log.txt).
+
+---
+
 # 🚀 Features
 
 * Predict football player market values using **XGBoost**
@@ -174,6 +191,17 @@ The notebooks automatically export results into dedicated folders.
 * Feature importance charts
 * Cluster visualizations
 
+<table>
+<tr>
+<td><img src="notebooks/images/feature_correlation_matrix.png" width="400"/><br/><sub>Feature correlation matrix</sub></td>
+<td><img src="notebooks/images/kmeans_player_segmentation.png" width="400"/><br/><sub>Player segmentation (K-Means)</sub></td>
+</tr>
+<tr>
+<td><img src="notebooks/images/feature_importance_full.png" width="400"/><br/><sub>Feature importance — full model</sub></td>
+<td><img src="notebooks/images/shap_waterfall_Mohamed_Salah.png" width="400"/><br/><sub>SHAP waterfall — individual player example</sub></td>
+</tr>
+</table>
+
 ### `notebooks/data/`
 
 * Transfer recommendations
@@ -211,6 +239,8 @@ This separation enables the project to provide both accurate market value estima
 | ------- | ------------ | ------------ | -------------- | -------------------- | ---------- |
 | Gavi    | Midfielder   | FC Barcelona | €30M           | €99.8M                | **+232%**  |
 | Rodrygo | Right Winger | Real Madrid  | €45M           | €63.5M                | **+41%**   |
+
+*(Figures pulled from `notebooks/data/undervalued_gems_report.txt` — update this table if you retrain the models, since predictions will shift.)*
 
 ---
 
