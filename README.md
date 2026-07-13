@@ -142,16 +142,19 @@ This notebook trains both production models.
 03_hyperparameter_tuning.ipynb
 ```
 
-If the tuned model beats the existing one, it overwrites the production
-model files:
+If the tuned model beats the existing one, it saves the new model as:
 
 ```
-scout_model_full.pkl
-scout_model_performance_only.pkl
+scout_model_full_tuned.pkl
+scout_model_performance_only_tuned.pkl
 ```
 
-The previous versions are kept as `scout_model_full_old.pkl` and
-`scout_model_performance_only_old.pkl` for reference/comparison.
+This is a manual checkpoint, not an automatic overwrite. After reviewing
+the results, rename the `_tuned` files to the production names
+(`scout_model_full.pkl`, `scout_model_performance_only.pkl`), and rename
+the previous production files to `scout_model_full_old.pkl` /
+`scout_model_performance_only_old.pkl` so they're kept for
+reference/comparison.
 
 ---
 
