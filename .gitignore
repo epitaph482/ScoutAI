@@ -1,19 +1,19 @@
-# Environment / secrets
+# --- Secrets ---
 .env
-*.env
 
-# Python
+# --- Python ---
 __pycache__/
 *.pyc
+*.pyo
 .ipynb_checkpoints/
+.venv/
+venv/
+env/
 
-# Large / regeneratable model artifacts (optional -- remove these lines
-# if you want to commit the trained models directly to the repo)
-# models/*.pkl
-
-# OS files
+# --- OS junk ---
 .DS_Store
 Thumbs.db
 
-# Jupyter
-*.ipynb_checkpoints
+# --- Editor ---
+.vscode/
+.idea/
