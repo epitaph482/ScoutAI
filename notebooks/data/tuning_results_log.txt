@@ -2,34 +2,74 @@
  🛠️ SCOUT AI: DUAL-MODEL OPTIMIZATION 🛠️
 ==========================================
 
---- RESULTS: FULL MODEL ---
-Best Parameters Found:
-  * subsample: 0.8
-  * reg_lambda: 1.5
-  * reg_alpha: 1
-  * n_estimators: 1600
-  * min_child_weight: 1
-  * max_depth: 7
-  * learning_rate: 0.02
-  * gamma: 0.5
-  * colsample_bytree: 0.7
-------------------------------------------
- Old Model RMSE: €4,022,706
- New Tuned RMSE: €3,848,864
-✅ SUCCESS: The tuned model is better! Saving as 'scout_model_full_tuned.pkl'...
+--- FULL MODEL ---
 
---- RESULTS: PERFORMANCE_ONLY MODEL ---
-Best Parameters Found:
-  * subsample: 0.8
-  * reg_lambda: 1.5
-  * reg_alpha: 1
-  * n_estimators: 1600
-  * min_child_weight: 5
-  * max_depth: 7
-  * learning_rate: 0.03
-  * gamma: 0.5
-  * colsample_bytree: 0.8
-------------------------------------------
- Old Model RMSE: €3,883,840
- New Tuned RMSE: €3,763,374
-✅ SUCCESS: The tuned model is better! Saving as 'scout_model_performance_only_tuned.pkl'...
+Best Parameters:
+----------------
+  subsample: 0.8
+  reg_lambda: 1.5
+  reg_alpha: 1
+  n_estimators: 1600
+  min_child_weight: 1
+  max_depth: 7
+  learning_rate: 0.02
+  gamma: 0.5
+  colsample_bytree: 0.7
+
+Training Time:
+--------------
+  435.3 sec
+
+Metrics:
+--------
+  Old RMSE      : €4,022,706
+  New RMSE      : €3,848,864
+
+  Old R²        : 0.6992
+  New R²        : 0.7246
+
+  Old Adj R²    : 0.6973
+  New Adj R²    : 0.7229
+
+Decision:
+---------
+  ✅ SUCCESS: The tuned model is better!
+     Improvement: €173,842 reduction in RMSE.
+     5-Fold CV Log-RMSE (Best): 0.7921
+     Saving as 'scout_model_full_tuned.pkl'...
+
+--- PERFORMANCE_ONLY MODEL ---
+
+Best Parameters:
+----------------
+  subsample: 0.8
+  reg_lambda: 1.5
+  reg_alpha: 1
+  n_estimators: 1600
+  min_child_weight: 5
+  max_depth: 7
+  learning_rate: 0.03
+  gamma: 0.5
+  colsample_bytree: 0.8
+
+Training Time:
+--------------
+  362.6 sec
+
+Metrics:
+--------
+  Old RMSE      : €3,883,840
+  New RMSE      : €3,763,374
+
+  Old R²        : 0.7196
+  New R²        : 0.7367
+
+  Old Adj R²    : 0.7182
+  New Adj R²    : 0.7354
+
+Decision:
+---------
+  ✅ SUCCESS: The tuned model is better!
+     Improvement: €120,466 reduction in RMSE.
+     5-Fold CV Log-RMSE (Best): 0.8491
+     Saving as 'scout_model_performance_only_tuned.pkl'...
