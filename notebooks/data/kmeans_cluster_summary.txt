@@ -1,0 +1,29 @@
+
+==========================================
+ 🧬 K-MEANS CLUSTER CENTERS (AVERAGES)
+==========================================
+ Profile: Prime / Core Squad  (n=5256)
+  * Avg Age: 24.7
+  * Avg Appearances: 64
+  * Avg Int. Caps: 7.2
+  * Avg Value: €4,094,070
+
+ Profile: Experienced Veterans (1)  (n=1193)
+  * Avg Age: 31.6
+  * Avg Appearances: 278
+  * Avg Int. Caps: 56.3
+  * Avg Value: €2,980,926
+
+ Profile: Experienced Veterans (2)  (n=5318)
+  * Avg Age: 32.1
+  * Avg Appearances: 82
+  * Avg Int. Caps: 4.1
+  * Avg Value: €356,233
+
+ Profile: Developing Prospects  (n=8613)
+  * Avg Age: 23.0
+  * Avg Appearances: 7
+  * Avg Int. Caps: 2.3
+  * Avg Value: €262,838
+
+==========================================

@@ -1,0 +1,35 @@
+==========================================
+ 🛠️ SCOUT AI: DUAL-MODEL OPTIMIZATION 🛠️
+==========================================
+
+--- RESULTS: FULL MODEL ---
+Best Parameters Found:
+  * subsample: 0.8
+  * reg_lambda: 1.5
+  * reg_alpha: 1
+  * n_estimators: 1600
+  * min_child_weight: 1
+  * max_depth: 7
+  * learning_rate: 0.02
+  * gamma: 0.5
+  * colsample_bytree: 0.7
+------------------------------------------
+ Old Model RMSE: €4,022,706
+ New Tuned RMSE: €3,848,864
+✅ SUCCESS: The tuned model is better! Saving as 'scout_model_full_tuned.pkl'...
+
+--- RESULTS: PERFORMANCE_ONLY MODEL ---
+Best Parameters Found:
+  * subsample: 0.8
+  * reg_lambda: 1.5
+  * reg_alpha: 1
+  * n_estimators: 1600
+  * min_child_weight: 5
+  * max_depth: 7
+  * learning_rate: 0.03
+  * gamma: 0.5
+  * colsample_bytree: 0.8
+------------------------------------------
+ Old Model RMSE: €3,883,840
+ New Tuned RMSE: €3,763,374
+✅ SUCCESS: The tuned model is better! Saving as 'scout_model_performance_only_tuned.pkl'...

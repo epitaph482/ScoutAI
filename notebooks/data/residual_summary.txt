@@ -1,0 +1,14 @@
+ScoutAI: Residual Analysis Summary
+==========================================
+
+--- Full Model Residual Summary ---
+  n               : 9334
+  mean residual   : €402,938
+  median residual : €2,319
+  std residual    : €3,024,876
+
+--- Performance Only Model Residual Summary ---
+  n               : 11046
+  mean residual   : €156,616
+  median residual : €-12,578
+  std residual    : €1,210,137

@@ -1,0 +1,7 @@
+ScoutAI Custom Transfer Target List
+=========================================
+Rodrygo | Right Winger | Real Madrid Club de Fútbol | Value: €45,000,000 | Model (full): €63,510,804 | Gap: 41.1% | Score: 98.7
+Ritsu Doan | Right Winger | Eintracht Frankfurt Fußball AG | Value: €17,000,000 | Model (full): €23,869,712 | Gap: 40.4% | Score: 93.3
+Moussa Diaby | Right Winger | Al-Ittihad Football Club | Value: €25,000,000 | Model (full): €28,486,852 | Gap: 13.9% | Score: 90.6
+Dodi Lukébakio | Right Winger | Sport Lisboa e Benfica | Value: €15,000,000 | Model (full): €16,096,007 | Gap: 7.3% | Score: 88.7
+Bryan Mbeumo | Right Winger | Manchester United Football Club | Value: €75,000,000 | Model (full): €77,892,728 | Gap: 3.9% | Score: 87.6
