@@ -1,5 +1,9 @@
 # ⚽ Scout AI — Football Player Market Value Prediction & Opportunity Detection
 
+<p align="center">
+  <img src="notebooks/images/scoutai_banner.png" width="100%">
+</p>
+
 Scout AI is an end-to-end machine learning project that predicts professional football players' market values and identifies potentially undervalued talents through an **Opportunity Mode**.
 
 The project combines data analysis, model optimization, explainable AI, clustering, and interactive scouting tools into a complete football analytics pipeline.
@@ -87,7 +91,7 @@ ScoutAI/
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/ScoutAI.git
+git clone https://github.com/alikinis/ScoutAI.git
 cd ScoutAI
 ```
 
