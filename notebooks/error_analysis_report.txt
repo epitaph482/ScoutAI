@@ -1,0 +1,44 @@
+ScoutAI: Error Analysis Report
+=========================================
+
+Top 10 Most Confusing Players -- full model:
+-----------------------------------------------------------------------------------------------
+      Player Name  Age Model  Actual Value (€)  ScoutAI Value (€)  Gap (Error €)
+            Pedri   23  full       150,000,000         53,614,948     96,385,052
+             Gavi   21  full        30,000,000         99,851,936     69,851,936
+   Erling Haaland   25  full       200,000,000        139,272,576     60,727,424
+  Vinicius Junior   26  full       140,000,000         90,237,272     49,762,728
+          Vitinha   26  full       140,000,000         91,264,400     48,735,600
+ Matthijs de Ligt   26  full        30,000,000         77,323,128     47,323,128
+Federico Valverde   27  full        90,000,000         42,911,884     47,088,116
+  Ousmane Dembélé   29  full       100,000,000         54,111,364     45,888,636
+   Julián Alvarez   26  full       100,000,000         55,392,996     44,607,004
+          Estêvão   19  full        80,000,000         36,324,980     43,675,020
+
+Top 10 Most Confusing Players -- performance_only model:
+-----------------------------------------------------------------------------------------------
+        Player Name  Age            Model  Actual Value (€)  ScoutAI Value (€)  Gap (Error €)
+       Fermín López   23 performance_only       100,000,000         48,482,268     51,517,732
+     Johan Manzambi   20 performance_only        50,000,000         17,448,472     32,551,528
+      Pablo Barrios   23 performance_only        55,000,000         28,392,088     26,607,912
+     Fisnik Asllani   23 performance_only        35,000,000          9,142,620     25,857,380
+  Maghnes Akliouche   24 performance_only        50,000,000         26,514,052     23,485,948
+     Marco Palestra   21 performance_only        35,000,000         15,069,780     19,930,220
+Aleksandar Pavlovic   22 performance_only        90,000,000         70,616,536     19,383,464
+       Pio Esposito   21 performance_only        45,000,000         63,981,460     18,981,460
+         Pape Gueye   27 performance_only        40,000,000         21,345,312     18,654,688
+     Matvey Kislyak   20 performance_only        25,000,000          6,812,651     18,187,349
+
+Top 10 Most Confusing Players -- combined (both models):
+-----------------------------------------------------------------------------------------------
+      Player Name  Age            Model  Actual Value (€)  ScoutAI Value (€)  Gap (Error €)
+            Pedri   23             full       150,000,000         53,614,948     96,385,052
+             Gavi   21             full        30,000,000         99,851,936     69,851,936
+   Erling Haaland   25             full       200,000,000        139,272,576     60,727,424
+     Fermín López   23 performance_only       100,000,000         48,482,268     51,517,732
+  Vinicius Junior   26             full       140,000,000         90,237,272     49,762,728
+          Vitinha   26             full       140,000,000         91,264,400     48,735,600
+ Matthijs de Ligt   26             full        30,000,000         77,323,128     47,323,128
+Federico Valverde   27             full        90,000,000         42,911,884     47,088,116
+  Ousmane Dembélé   29             full       100,000,000         54,111,364     45,888,636
+   Julián Alvarez   26             full       100,000,000         55,392,996     44,607,004
