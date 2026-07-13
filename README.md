@@ -1,7 +1,7 @@
 # ⚽ Scout AI — Football Player Market Value Prediction & Opportunity Detection
 
 <p align="center">
-  <img src="notebooks/images/scoutai_banner.png" width="100%">
+  <img src="assets/scoutai_banner.png" width="100%">
 </p>
 
 Scout AI is an end-to-end machine learning project that predicts professional football players' market values and identifies potentially undervalued talents through an **Opportunity Mode**.
