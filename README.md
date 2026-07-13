@@ -212,8 +212,6 @@ This separation enables the project to provide both accurate market value estima
 | Gavi    | Midfielder   | FC Barcelona | €30M           | €99.8M                | **+232%**  |
 | Rodrygo | Right Winger | Real Madrid  | €45M           | €63.5M                | **+41%**   |
 
-*(Figures pulled from `notebooks/data/undervalued_gems_report.txt` — update this table if you retrain the models, since predictions will shift.)*
-
 ---
 
 # 🛠️ Tech Stack
