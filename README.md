@@ -267,3 +267,13 @@ This separation enables the project to provide both accurate market value estima
 Scout AI aims to support football scouting and recruitment by combining predictive machine learning with explainable AI techniques.
 
 Rather than simply estimating market prices, the system is designed to identify players whose on-field performance suggests they may be significantly undervalued in the transfer market.
+
+---
+
+# 👤 Author
+
+**Ali Kınış**
+
+Statistics Student @ Ege University
+
+GitHub: https://github.com/alikinis
