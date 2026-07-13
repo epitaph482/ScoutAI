@@ -1,5 +1,0 @@
-Pervis Estupiñán | Left-Back | Associazione Calcio Milan | Value: €12,000,000 | Model (full): €19,093,204 | Gap: 59.1% | Score: 94.4
-Milos Kerkez | Left-Back | Liverpool Football Club | Value: €35,000,000 | Model (full): €44,195,252 | Gap: 26.3% | Score: 93.8
-Gerardo Arteaga | Left-Back | Club de Fútbol Monterrey Rayados A.C. | Value: €2,000,000 | Model (full): €6,751,890 | Gap: 237.6% | Score: 92.8
-Alex Sandro | Left-Back | Clube de Regatas do Flamengo | Value: €1,000,000 | Model (full): €2,813,458 | Gap: 181.3% | Score: 92.5
-Vitaliy Mykolenko | Left-Back | Everton Football Club | Value: €25,000,000 | Model (full): €30,894,184 | Gap: 23.6% | Score: 92.2
