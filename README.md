@@ -1,151 +1,238 @@
 # ⚽ Scout AI — Football Player Market Value Prediction & Opportunity Detection
 
-Scout AI is a machine learning system that predicts football player market values and surfaces potentially undervalued players ("Opportunity Mode"), built on top of a Transfermarkt-style relational dataset (players, appearances, clubs, transfers, valuations).
+Scout AI is an end-to-end machine learning project that predicts professional football players' market values and identifies potentially undervalued talents through an **Opportunity Mode**.
 
-The project is deliberately built around **two separate models** rather than one — a decision that came directly out of investigating a data leakage problem during development. That investigation, and the fixes that followed, are as much a part of this project as the final model.
-
----
-
-## 🎯 What this project does
-
-- Predicts a player's market value from performance, biographical, and club-context data
-- Detects players whose predicted value exceeds their current market value ("gems")
-- Explains individual predictions with SHAP (which features drove a specific valuation up or down)
-- Segments the player population into interpretable profiles via K-Means clustering
-- Provides an interactive CLI to search for scouting targets by position, budget, and age range
+The project combines data analysis, model optimization, explainable AI, clustering, and interactive scouting tools into a complete football analytics pipeline.
 
 ---
 
-## 🧠 Why two models instead of one?
+# 🚀 Features
 
-Early versions of this project trained a single XGBoost model on every available feature, including **market-signal features** — a player's past transfer fee, whether they've ever been transferred, and contract length remaining.
-
-That model looked great (R² ≈ 0.73), but a closer look at feature importance showed why: `max_career_transfer_fee` alone accounted for ~32–48% of the model's decisions. In other words, the model was largely **re-stating a price the market had already set**, rather than learning value from performance.
-
-This matters a lot for "Opportunity Mode," whose entire purpose is finding players *the market hasn't priced correctly yet* — almost by definition, players with little or no transfer history. Using a model that leans this heavily on transfer history would systematically fail at the one thing it's meant to do.
-
-**The fix:** train two models on identical data, differing only in feature set:
-
-| Model | Features | Used for |
-|---|---|---|
-| `scout_model_full.pkl` | Performance + bio + club context **+ market-signal features** (past fee, transfer history, contract length) | Players with a real transfer history — most accurate estimate (R² ≈ 0.75) |
-| `scout_model_performance_only.pkl` | Performance + bio + club context **only** | Players with no transfer history — avoids treating a placeholder `0` transfer fee as a genuine negative signal (R² ≈ 0.71) |
-
-Every downstream script routes each player to the correct model automatically, based on `has_transfer_history`. Roughly a quarter of the dataset has real transfer history; the rest — including most of the "undiscovered talent" this project cares about — is scored by the performance-only model.
+* Predict football player market values using **XGBoost**
+* Dual-model architecture to reduce market bias
+* Hyperparameter optimization
+* SHAP explainability analysis
+* Prediction error & residual analysis
+* Player similarity clustering (K-Means)
+* Undervalued player detection
+* Individual player valuation
+* Club scouting interface
+* Interactive scouting reports
 
 ---
 
-## 🐛 Data quality issues found and fixed
-
-This dataset required more cleanup than expected. Each of these was caught by cross-checking real players (e.g. "why does the model think Lamine Yamal has a transfer history?") rather than by a metric alone:
-
-1. **`has_transfer_history` leakage** — the original SQL counted *any* row in the `transfers` table, including academy promotions and €0 records, as a "transfer." This meant academy graduates (like Lamine Yamal) were incorrectly flagged as having a real transfer history. Fixed by requiring `transfer_fee > 0`.
-2. **Missing `date_of_birth` → `age = 0`** — a small number of players had no birth date, which silently became `age = 0` after `fillna(0)`, and the model interpreted them as infants with massive "wonderkid" potential. Fixed with a `WHERE date_of_birth IS NOT NULL` filter.
-3. **Stale transfer fee vs. current market reality** — `max_career_transfer_fee` (career peak) let the model over-value players who were once expensive but have since declined. Added `most_recent_transfer_fee` (latest paid transfer only) as an additional, more current signal.
-4. **Retired / inactive players diluting the training set** — players with `last_season < 2023` added noise without adding predictive value (their "current" market value is effectively frozen or stale). Filtering them out improved both models' R² noticeably (full: 0.73 → 0.75, performance-only: 0.70 → 0.71) despite cutting the dataset roughly in half.
-5. **Incomplete league weighting** — several helper scripts had a `league_weights` dictionary missing entries (`Ligue 1`, `Eredivisie`, `Liga Portugal`), silently defaulting those leagues to a neutral coefficient. Fixed by keeping one canonical dictionary and copying it exactly across scripts.
-
----
-
-## 📊 Model performance
-
-| Model | 5-fold CV R² | Holdout R² |
-|---|---|---|
-| Full (with market signals) | 0.753 | 0.750 |
-| Performance-only | 0.715 | 0.711 |
-
-Hyperparameter tuning via `RandomizedSearchCV` (25 candidates × 5 folds) improved RMSE by ~0.8% over the hand-picked baseline — a useful but minor gain compared to the data-quality fixes above, which moved R² by several points. **Data quality mattered far more than model tuning** on this project.
-
-### Known limitations (found via error analysis)
-
-- **Superstar premium**: players like Erling Haaland carry market value driven by marketability/global brand, not just output — the model systematically underestimates them.
-- **Creative/technical players**: players like Pedri, whose value comes from vision and ball progression rather than goals/assists, are undervalued by the model because those qualities aren't captured by the available stats (no xG, key passes, or pass completion data in this dataset).
-
----
-
-## 🗂️ Repository structure
+# 📁 Project Structure
 
 ```
-scoutai/
+ScoutAI/
+│
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
 ├── .env.example
 │
-├── src/
-│   ├── __init__.py
-│   └── scoutai_common.py          # Shared configuration, feature engineering,
-│                                  # model routing, and database utilities
-│
 ├── sql/
-│   └── 00_setup_views.sql          # All database views (player_stats, transfer_stats,
-│                                    # club_info, view_scout_master)
+│   └── 00_setup_views.sql
 │
-├── notebooks/
-│   ├── 01_eda_and_correlation.ipynb
-│   ├── 02_scout_ai_model.ipynb           # Trains BOTH models (full + performance_only)
-│   ├── 03_scoutai_undervalued_analysis.ipynb     # "Opportunity Mode" gem-finder, per position
-│   ├── 04_specific_player_value.ipynb    # Look up one player, get a routed prediction
-│   ├── 05_shap_analysis.ipynb            # Global SHAP summary plot
-│   ├── 06_player_impact_analysis.ipynb   # Per-player SHAP waterfall (interactive)
-│   ├── 07_error_analysis.ipynb           # "Most confusing" players, per model
-│   ├── 08_residual_analysis.ipynb        # Residual diagnostics, per model
-│   ├── 09_hyperparameter_tuning.ipynb    # RandomizedSearchCV tuning for the full model
-│   ├── 10_kmeans_clustering.ipynb        # Player segmentation (K-Means + PCA)
-│   └── 11_club_scouting_interactive.ipynb # Interactive CLI recommender
+├── dashboard/                 # planned: standalone visualization app
 │
-├── models/
-│   ├── scout_model_full.pkl
-│   └── scout_model_performance_only.pkl
-│
-├── data/
-│   ├── raw/
-│   │   └── .gitkeep
-│   ├── scout_predictions_export_full.csv
-│   ├── scout_predictions_export_performance_only.csv
-│   └── transfer_list.txt
-│
-└── images/
-    ├── feature_correlation_matrix.png
-    ├── shap_summary_full_model.png
-    ├── shap_summary_performance_only.png
-    ├── shap_waterfall_example.png
-    ├── residual_analysis.png
-    └── kmeans_player_segmentation.png
+└── notebooks/
+    ├── 01_eda_and_correlation.ipynb
+    ├── 02_scout_ai_model.ipynb
+    ├── 03_hyperparameter_tuning.ipynb
+    ├── 04_shap_analysis.ipynb
+    ├── 05_error_analysis.ipynb
+    ├── 06_residual_analysis.ipynb
+    ├── 07_kmeans_clustering.ipynb
+    ├── 08_scoutai_undervalued_analysis.ipynb
+    ├── 09_specific_player_value.ipynb
+    ├── 10_player_impact_analysis.ipynb
+    ├── 11_club_scouting_recommendations.ipynb
+    │
+    ├── models/
+    │   ├── scout_model_full.pkl              # production model (post-tuning)
+    │   ├── scout_model_performance_only.pkl  # production model (post-tuning)
+    │   ├── scout_model_full_old.pkl              # pre-tuning, kept for comparison
+    │   └── scout_model_performance_only_old.pkl  # pre-tuning, kept for comparison
+    │
+    ├── data/
+    │   ├── *.csv
+    │   └── *.txt
+    │
+    └── images/
+        └── *.png
 ```
 
 ---
 
-## ⚙️ Setup
+# ⚙️ Installation
 
-1. **Database**: PostgreSQL with the source CSVs loaded (`players`, `appearances`, `clubs`, `competitions`, `transfers`, `player_valuations`, `national` / `national_teams`, `games`, `club_games`, `game_events`, `game_lineups`).
-2. Run `sql/00_setup_views.sql` to create all views, ending with `view_scout_master` — the single source of truth every notebook reads from.
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Copy `.env.example` to `.env` (same folder) and fill in your real database credentials:
-   ```
-   SCOUTAI_DB_URL=postgresql://USERNAME:PASSWORD@localhost:5432/scoutai_db
-   ```
-   `.env` is gitignored and never committed — only `.env.example` (placeholder values) is.
-5. Run `notebooks/02_scout_ai_model.ipynb` first. It trains both models and saves them to the `models/` directory. The remaining notebooks assume these trained models already exist.
+Clone the repository:
+
+```bash
+git clone https://github.com/yourusername/ScoutAI.git
+cd ScoutAI
+```
+
+Install the required packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+Set up the PostgreSQL database. Load the source tables (`players`,
+`appearances`, `clubs`, `competitions`, `transfers`, `player_valuations`,
+`national_teams`), then create the views the notebooks read from:
+
+```bash
+psql -d <dbname> -f sql/00_setup_views.sql
+```
+
+Create your environment file and fill in your database connection string:
+
+```bash
+cp .env.example .env
+```
 
 ---
 
-## 🔧 Known improvements (not yet done)
+# ▶️ Workflow
 
-- No advanced performance metrics (xG, key passes, progressive carries, etc.) are available in the source data. Incorporating richer event-level statistics would likely improve the valuation of technically gifted and creative players.
-- The current pipeline relies on manually engineered features. Future work could explore automated feature generation and temporal modeling using season-by-season player histories.
+Execute the notebooks in numerical order.
+
+### 0. Exploratory Data Analysis (optional)
+
+```
+01_eda_and_correlation.ipynb
+```
+
+Correlation matrix and initial feature exploration. Not required for the
+pipeline to run, but useful to understand the data first.
+
+### 1. Train the Models
+
+```
+02_scout_ai_model.ipynb
+```
+
+This notebook trains both production models.
 
 ---
 
-## 📝 License
+### 2. Hyperparameter Optimization
 
-This project uses publicly available football statistics for educational/portfolio purposes.
+```
+03_hyperparameter_tuning.ipynb
+```
+
+If the tuned model beats the existing one, it overwrites the production
+model files:
+
+```
+scout_model_full.pkl
+scout_model_performance_only.pkl
+```
+
+The previous versions are kept as `scout_model_full_old.pkl` and
+`scout_model_performance_only_old.pkl` for reference/comparison.
 
 ---
 
-## ⭐ Acknowledgements
+### 3. Analysis Pipeline
 
-Player data is based on publicly available Transfermarkt-style datasets and was used solely for educational and portfolio purposes.
+Continue executing:
+
+```
+04 → SHAP Analysis
+
+05 → Error Analysis
+
+06 → Residual Analysis
+
+07 → K-Means Player Clustering
+
+08 → Opportunity Mode (Undervalued Players)
+
+09 → Specific Player Valuation
+
+10 → Player Impact Analysis
+
+11 → Interactive Club Scouting
+```
+
+---
+
+# 📂 Generated Outputs
+
+The notebooks automatically export results into dedicated folders.
+
+### `notebooks/images/`
+
+* SHAP plots
+* Residual plots
+* Correlation heatmaps
+* Feature importance charts
+* Cluster visualizations
+
+### `notebooks/data/`
+
+* Transfer recommendations
+* Error reports
+* Model outputs
+* CSV exports
+* Generated scouting tables
+
+---
+
+# 🧠 Why Two Models Instead of One?
+
+During early development, Scout AI used a single XGBoost model trained on **every available feature**, including market-driven variables such as:
+
+* Previous transfer fees
+* Contract length
+* Existing market valuation signals
+
+Although this achieved high prediction accuracy, the model was effectively learning to reproduce the market's existing valuation rather than discovering hidden talent.
+
+To overcome this issue, Scout AI adopts a **dual-model architecture**.
+
+| Model                                 | Features                                                      | Intended Use                                                                                          |
+| -------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **scout_model_full.pkl**               | Performance + market-signal features                          | Accurate valuation for established players with transfer history                                     |
+| **scout_model_performance_only.pkl**   | Performance, biographical information and club context only  | Detecting undervalued players while avoiding bias introduced by transfer history or zero-fee records |
+
+This separation enables the project to provide both accurate market value estimation and meaningful scouting recommendations.
+
+---
+
+# 📈 Example Opportunity Mode Results
+
+| Player  | Position     | Club         | Current Value | Scout AI Prediction | Difference |
+| ------- | ------------ | ------------ | -------------- | -------------------- | ---------- |
+| Gavi    | Midfielder   | FC Barcelona | €30M           | €99.8M                | **+232%**  |
+| Rodrygo | Right Winger | Real Madrid  | €45M           | €63.5M                | **+41%**   |
+
+*(Figures pulled from `notebooks/data/undervalued_gems_report.txt` — update this table if you retrain the models, since predictions will shift.)*
+
+---
+
+# 🛠️ Tech Stack
+
+* Python
+* Pandas
+* NumPy
+* PostgreSQL / SQLAlchemy
+* Scikit-learn
+* XGBoost
+* SHAP
+* Matplotlib
+* Seaborn
+* Jupyter Notebook
+
+---
+
+# 🎯 Project Goal
+
+Scout AI aims to support football scouting and recruitment by combining predictive machine learning with explainable AI techniques.
+
+Rather than simply estimating market prices, the system is designed to identify players whose on-field performance suggests they may be significantly undervalued in the transfer market.
